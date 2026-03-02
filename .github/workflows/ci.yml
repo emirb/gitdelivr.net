@@ -21,7 +21,7 @@ jobs:
         run: apt-get update && apt-get install -y --no-install-recommends ca-certificates
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --include=optional
 
       - name: Typecheck
         run: npm exec -- tsc --noEmit
@@ -57,7 +57,7 @@ jobs:
           apt-get install -y --no-install-recommends bash ca-certificates coreutils curl git git-lfs tar xz-utils
 
       - name: Install npm dependencies
-        run: npm ci
+        run: npm ci --include=optional
 
       - name: Prepare scripts
         run: |
