@@ -1,0 +1,21 @@
+{
+  "name": "gitcdn",
+  "version": "1.0.0",
+  "description": "CDN for Git — a Cloudflare Workers caching proxy for Git smart HTTP protocol",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev -c wrangler.local.toml",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "types": "wrangler types",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.2.4",
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "typescript": "^5.7.2",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.69.0"
+  }
+}
