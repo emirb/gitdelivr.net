@@ -65,7 +65,7 @@ export default {
     }
 
     if (path === '/favicon.ico' || path === '/favicon.png') {
-      return Response.redirect(`${url.origin}/favicon.svg`, 302);
+      return new Response('Not found', { status: 404 });
     }
 
     if (path === '/') {
