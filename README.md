@@ -219,9 +219,7 @@ Workers observability logs are enabled in `wrangler.toml`, and the worker expose
 
 ## CI
 
-`.github/workflows/ci.yml` runs unit tests with coverage first, then a benchmark job on GitHub Actions against a local `wrangler dev` worker.
-
-This gives you repeatable clone benchmarks in CI instead of ad-hoc local testing.
+`.github/workflows/ci.yml` runs typechecking and unit tests with coverage on GitHub Actions.
 
 ## Limitations
 
