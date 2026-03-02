@@ -70,6 +70,7 @@ export async function handleUploadPack(request: Request, ctx: UploadPackContext)
   // ── Cache check ─────────────────────────────────────────────────────
   const cached = await ctx.cache.getPackStream(bodyHash);
   if (cached) {
+    console.log(`Cache hit for pack ${bodyHash.slice(0, 12)} from ${cached.tier}`);
     return maybeRecordClone(new Response(cached.body, { status: 200, headers: packH('HIT', cached.tier, bodyHash, cached.size) }), inspection.cloneLike, ctx);
   }
 
@@ -79,9 +80,9 @@ export async function handleUploadPack(request: Request, ctx: UploadPackContext)
   }
 
   // ── Fetch from origin ───────────────────────────────────────────────
-  console.log('Fetching from origin...');
+  console.log('Fetching pack from origin forge');
   const upResp = await fetchUpstream(request, ctx, requestBody);
-  console.log(`Upstream response: ${upResp.status}`);
+  console.log(`Origin forge response: ${upResp.status}`);
   if (upResp.status !== 200) return maybeRecordClone(upResp, inspection.cloneLike, ctx);
 
   const cl = parseInt(upResp.headers.get('content-length') || '0', 10);
@@ -134,6 +135,7 @@ async function handleV2LsRefs(
   if (await ctx.cache.isV2CommandFresh(bodyHash, V2_META_TTL)) {
     const cached = await ctx.cache.getV2Command(bodyHash);
     if (cached) {
+      console.log(`Cache hit for protocol v2 metadata ${bodyHash.slice(0, 12)} from ${cached.tier}`);
       return new Response(cached.body, {
         status: 200,
         headers: {
@@ -188,6 +190,7 @@ async function handleCacheablePack(
 
   const cached = await ctx.cache.getPackStream(bodyHash);
   if (cached) {
+    console.log(`Cache hit for pack ${bodyHash.slice(0, 12)} from ${cached.tier}`);
     return new Response(cached.body, { status: 200, headers: packH('HIT', cached.tier, bodyHash, cached.size) });
   }
 
@@ -196,9 +199,9 @@ async function handleCacheablePack(
     return waited;
   }
 
-  console.log('Fetching from origin...');
+  console.log('Fetching pack from origin forge');
   const upResp = await fetchUpstream(request, ctx, requestBody, { forceIdentityEncoding: true });
-  console.log(`Upstream response: ${upResp.status}`);
+  console.log(`Origin forge response: ${upResp.status}`);
   if (upResp.status !== 200) return upResp;
   if (!isGitUploadPackContentType(upResp.headers.get('content-type'))) {
     return new Response('Origin returned a non-Git upload-pack response, likely an anti-bot or HTML page.', {
@@ -509,10 +512,10 @@ interface UpstreamFetchOptions { forceIdentityEncoding?: boolean; }
 async function fetchUpstream(request: Request, ctx: UploadPackContext, body: ArrayBuffer, options: UpstreamFetchOptions = {}): Promise<Response> {
   const headers = buildUpstreamHeaders(request, options);
   const url = originEndpoint(ctx.originUrl, '/git-upload-pack');
-  console.log(`Fetching upstream: ${url}, protocol: ${headers['Git-Protocol'] || 'v1'}, body size: ${body.byteLength}`);
+  console.log(`Fetching origin forge: ${url}, protocol: ${headers['Git-Protocol'] || 'v1'}, body size: ${body.byteLength}`);
 
   const resp = await fetchWithPreservedRedirects(url, headers, body);
-  console.log(`Upstream response status: ${resp.status}`);
+  console.log(`Origin forge response status: ${resp.status}`);
   if (!resp.ok) return passthroughResponse(resp);
   return resp;
 }
@@ -561,11 +564,11 @@ async function proxyToOrigin(
   const url = originEndpoint(ctx.originUrl, '/git-upload-pack');
   const headers = buildUpstreamHeaders(request);
 
-  console.log(`Proxying to: ${url}, protocol: ${headers['Git-Protocol'] || 'v1'}, body size: ${body.byteLength}`);
+  console.log(`Proxying request to origin forge: ${url}, protocol: ${headers['Git-Protocol'] || 'v1'}, body size: ${body.byteLength}`);
 
   const resp = await fetchWithPreservedRedirects(url, headers, body);
 
-  console.log(`Upstream response: ${resp.status} ${resp.statusText}`);
+  console.log(`Origin forge response: ${resp.status} ${resp.statusText}`);
   return passthroughResponse(resp, extraHeaders);
 }
 
