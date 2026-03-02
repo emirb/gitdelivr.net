@@ -284,7 +284,7 @@ footer a:hover{text-decoration:underline}
 </main>
 <div class="w">
 <footer>
-  <a href="https://github.com/emirb/gitdelivr">Source</a> · Built on Cloudflare Workers + R2 · <a href="https://www.phoronix.com/news/GNOME-GitHub-GitLab-Redirect">Inspired by GNOME</a>
+  <a href="https://github.com/emirb/gitdelivr.net">Source</a> · Built on Cloudflare Workers + R2 · <a href="https://www.phoronix.com/news/GNOME-GitHub-GitLab-Redirect">Inspired by GNOME</a>
 </footer>
 </div>
 <script>document.querySelectorAll("[data-copy]").forEach(e=>e.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(e.dataset.copy||"");e.dataset.label=e.textContent||"";e.textContent="Copied";setTimeout(()=>{e.textContent=e.dataset.label||""},1200)}catch{}}))</script>
