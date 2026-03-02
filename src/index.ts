@@ -18,7 +18,7 @@ import { handleArchive } from './archive';
 import { handleLfs } from './lfs';
 import { resolveOrigin } from './config';
 import { Cache } from './cache';
-import { renderLandingPage } from './landing';
+import { renderFavicon, renderLandingPage } from './landing';
 
 export interface Env {
   CACHE_BUCKET: R2Bucket;
@@ -60,6 +60,14 @@ export default {
     const path = url.pathname;
 
     // Health check
+    if (path === '/favicon.svg') {
+      return renderFavicon();
+    }
+
+    if (path === '/favicon.ico' || path === '/favicon.png') {
+      return Response.redirect(`${url.origin}/favicon.svg`, 302);
+    }
+
     if (path === '/') {
       return renderLandingPage(url.host);
     }

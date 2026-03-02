@@ -1,3 +1,8 @@
+const FAVICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<rect width="64" height="64" rx="12" fill="#090b10"/>
+<path d="M18 14h28v10H30v8h14v10H30v8h16v10H18z" fill="#22c55e"/>
+</svg>`;
+
 export function renderLandingPage(_host: string): Response {
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -10,6 +15,7 @@ export function renderLandingPage(_host: string): Response {
 <meta property="og:description" content="Cache git clone/fetch at Cloudflare's 300+ edge locations. Drop-in proxy for any public forge.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://gitdelivr.net">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
@@ -295,6 +301,15 @@ footer a:hover{text-decoration:underline}
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 'public, max-age=3600',
+    },
+  });
+}
+
+export function renderFavicon(): Response {
+  return new Response(FAVICON_SVG, {
+    headers: {
+      'Content-Type': 'image/svg+xml; charset=utf-8',
+      'Cache-Control': 'public, max-age=86400',
     },
   });
 }
