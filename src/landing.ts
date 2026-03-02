@@ -60,7 +60,6 @@ header{
   border-radius:3px;
   padding:3px 10px;
   margin-bottom:20px;
-  opacity:0;animation:fi .5s ease forwards;
 }
 
 h1{
@@ -69,7 +68,6 @@ h1{
   letter-spacing:-.03em;
   line-height:1.1;
   margin-bottom:14px;
-  opacity:0;animation:fi .5s ease .08s forwards;
 }
 h1 em{font-style:normal;color:var(--accent)}
 
@@ -78,7 +76,6 @@ h1 em{font-style:normal;color:var(--accent)}
   color:var(--fg2);
   line-height:1.6;
   max-width:540px;
-  opacity:0;animation:fi .5s ease .16s forwards;
 }
 
 .lead a{color:var(--blue);text-decoration:none}
@@ -94,7 +91,6 @@ h1 em{font-style:normal;color:var(--accent)}
   border-radius:6px;
   margin:clamp(24px,5vw,40px) 0 clamp(32px,6vw,56px);
   overflow:hidden;
-  opacity:0;animation:fi .5s ease .24s forwards;
 }
 
 .term-bar{
@@ -231,8 +227,6 @@ footer{
 }
 footer a{color:var(--blue);text-decoration:none}
 footer a:hover{text-decoration:underline}
-
-@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:480px){
   .stats{grid-template-columns:repeat(3,1fr)}
